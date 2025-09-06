@@ -1,0 +1,102 @@
+/* Wassel Application Styles */
+
+/* Basic styling for the application */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+#main {
+  margin-top: 64px; /* Account for fixed header */
+}
+
+/* Header styles */
+.header {
+  background-color: #2196F3;
+  color: white;
+}
+
+/* Home page styles */
+.home-welcome {
+  text-align: center;
+  padding: 50px;
+}
+
+.home-welcome h1 {
+  color: #2196F3;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.home-welcome p {
+  font-size: 1.2em;
+  color: #666;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Button styles */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background-color: #2196F3;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1976D2;
+}
+
+/* Card styles */
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Navigation styles */
+.nav-drawer {
+  background: white;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .home-welcome {
+    padding: 30px 20px;
+  }
+  
+  .home-welcome h1 {
+    font-size: 2em;
+  }
+}
