@@ -18,8 +18,8 @@ export function UserNewValidator(values, props) {
   }
   if(!values.password) {
     errors.password = 'Required';
-  } else if (values.password.length < 8) {
-    errors.password = 'Password is too short (8 characters min.)'
+  } else if (values.password.length < 6) {
+    errors.password = 'Password is too short (6 characters min.)'
   }
   if(!values.password_confirmation || values.password_confirmation != values.password) {
     errors.password_confirmation = 'Does not match password';

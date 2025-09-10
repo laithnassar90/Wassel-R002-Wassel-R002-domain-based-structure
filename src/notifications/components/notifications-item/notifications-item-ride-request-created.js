@@ -4,6 +4,14 @@ import Timestamp from 'react-time'
 import TimeAgo from 'react-timeago'
 
 export const RideRequestCreated = ({ notification }) => {
+  if (!notification.sender || !notification.ride) {
+    return (
+      <div className='header__notification__body'>
+        Invalid notification data
+      </div>
+    )
+  }
+
   return (
     <div className='header__notification__body'>
       <Link to={`/users/${notification.sender.id}`} className='header__notification__link'>

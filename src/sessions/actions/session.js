@@ -19,9 +19,14 @@ export function loginFromCookie(data) {
           headers: {
             'X-User-Email': data.email,
             'X-User-Token': data.access_token
-          }
+          },
+          timeout: 10000
         }
       }
+    }).catch(error => {
+      console.error('Cookie login failed:', error)
+      localStorage.clear()
+      return Promise.reject(error)
     })
   }
 }
@@ -34,9 +39,14 @@ export function logInEmailBackend(data) {
         request: {
           method: 'post',
           url: APIEndpoints.LOGIN_EMAIL,
-          data: data
+          data: data,
+          timeout: 10000
         }
       }
+    }).catch(error => {
+      console.error('Login failed:', error)
+      const errorMessage = (error.response && error.response.data && error.response.data.message) || 'Login failed. Please try again.'
+      return Promise.reject(errorMessage)
     })
   }
 }
@@ -74,9 +84,15 @@ export function logout() {
           headers: {
             'X-User-Email': session.email,
             'X-User-Token': session.access_token
-          }
+          },
+          timeout: 5000
         }
       }
+    }).catch(error => {
+      console.error('Logout failed:', error)
+      // Clear local storage even if logout fails
+      localStorage.clear()
+      return Promise.resolve()
     })
   }
 }

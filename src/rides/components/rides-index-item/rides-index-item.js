@@ -1,5 +1,5 @@
 // utils
-import React, { Component, PropTypes }  from 'react'
+import React, { Component, PropTypes, memo }  from 'react'
 import { Link } from 'react-router'
 import { Tooltip } from 'react-bootstrap'
 import Timestamp from 'react-time'
@@ -9,8 +9,12 @@ import pluralize from 'pluralize'
 // components
 import { RenderUserAge } from '../../../components/shared/render-user-age/render-user-age'
 import { Stars } from '../../../components/shared/stars/stars'
+import { RideShape } from '../../../utils/prop-types'
 
-export class RidesIndexItem extends Component {
+class RidesIndexItemComponent extends Component {
+  static propTypes = {
+    ride: RideShape.isRequired,
+  }
   render() {
     const { ride } = this.props
     const tooltipComfort = (
@@ -56,11 +60,13 @@ export class RidesIndexItem extends Component {
         <div className='ride-offer__price'>
           <div className='ride-offer__price-value'>{ride.price}</div>
           <div className='ride-offer__price-currency'>{ride.currency}</div>
-          <div className='ride-offer__price-label'>for person</div>
+          <div className='ride-offer__price-label'>per person</div>
+          <div className='ride-offer__savings'>Save on fuel costs!</div>
         </div>
         <div className='ride-offer__places'>
           <div className='ride-offer__places-free'>{ride.free_places_count}</div>
-          <div className='ride-offer__places-label'>/ {ride.places} {pluralize('place', ride.free_places_count)} free</div>
+          <div className='ride-offer__places-label'>/ {ride.places} {pluralize('seat', ride.free_places_count)} available</div>
+          <div className='ride-offer__transport'>{ride.transport_type === 'bus' ? '🚌 Bus' : '🚗 Car'}</div>
         </div>
       </div>
 
@@ -76,3 +82,6 @@ export class RidesIndexItem extends Component {
     )
   }
 }
+
+export const RidesIndexItem = memo(RidesIndexItemComponent)
+export default RidesIndexItem

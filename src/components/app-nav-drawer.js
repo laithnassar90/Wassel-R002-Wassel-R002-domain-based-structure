@@ -3,7 +3,7 @@ import Drawer from 'material-ui/Drawer'
 import { List, ListItem, makeSelectable } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 import { spacing, typography, zIndex } from 'material-ui/styles'
-import { cyan500 } from 'material-ui/styles/colors'
+import { blue600, blue700 } from 'material-ui/styles/colors'
 import RaisedButton from 'material-ui/RaisedButton'
 import ContentAddBox from 'material-ui/svg-icons/content/add-box'
 import ActionSearch from 'material-ui/svg-icons/action/search'
@@ -22,16 +22,29 @@ const SelectableList = makeSelectable(List);
 const styles = {
   logo: {
     cursor: 'pointer',
-    fontSize: 24,
+    fontSize: 26,
     color: typography.textFullWhite,
     lineHeight: `${spacing.desktopKeylineIncrement}px`,
-    fontWeight: typography.fontWeightLight,
-    backgroundColor: cyan500,
+    fontWeight: 700,
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     paddingLeft: spacing.desktopGutter,
-    marginBottom: 8,
+    paddingTop: 16,
+    paddingBottom: 16,
+    marginBottom: 12,
+    borderRadius: '0 0 20px 0',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+    fontFamily: 'Inter, Roboto, sans-serif',
+    letterSpacing: '-0.02em'
   },
   avatatStyle: {
-    marginRight: 10
+    marginRight: 12,
+    border: '3px solid rgba(255, 255, 255, 0.3)'
+  },
+  logoImage: {
+    height: '36px',
+    marginRight: '12px',
+    verticalAlign: 'middle',
+    filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
   }
 }
 
@@ -54,7 +67,7 @@ export class AppNavDrawer extends Component {
   }
 
   handleRequestChangeLink = (event, value) => {
-    window.location = value
+    this.context.router.push(value)
   }
 
   handleTouchTapHeader = () => {
@@ -77,7 +90,8 @@ export class AppNavDrawer extends Component {
     } else {
       return(
         <div style={styles.logo} onTouchTap={this.handleTouchTapHeader}>
-          Blabla Clone
+          <img src="/wassel-logo.png" alt="Wassel" style={styles.logoImage} />
+          Wassel
         </div>
       )
     }

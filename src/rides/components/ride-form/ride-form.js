@@ -38,11 +38,15 @@ class RideForm extends Component {
           floatingLabelText="Start date"
           className='date-input'
           minDate={new Date()} />
-        <Field name="car_id" component={renderSelectField} label="Car">
+        <Field name="transport_type" component={renderSelectField} label="Transport Type">
+          <MenuItem value="car" primaryText="Car (Carpool)" />
+          <MenuItem value="bus" primaryText="Bus Travel" />
+        </Field>
+        <Field name="car_id" component={renderSelectField} label="Car (if carpooling)">
           {_.map(cars, (n) => n)}
         </Field>
-        <Field name="places" type="text" component={renderTextField} label="Seats"/>
-        <Field name="price" type="text" component={renderTextField} label="Price"/>
+        <Field name="places" type="number" component={renderTextField} label="Available Seats" min="1" max="8"/>
+        <Field name="price" type="number" component={renderTextField} label="Price per Person" min="0" step="0.01"/>
         <Field name="currency" component={renderSelectField} label="Currency">
           {_.map(currencies, (n) => n)}
         </Field>

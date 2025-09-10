@@ -11,6 +11,7 @@ import Chip from 'material-ui/Chip'
 
 // actions
 import { fetchRides, loadSearchFormData } from '../../actions/rides'
+import { PAGINATION } from '../../../constants/app-constants'
 
 // components
 import { AsyncContent } from '../../../components/shared/async-content/async-content'
@@ -18,7 +19,7 @@ import { RidesIndexItem } from '../../components/rides-index-item/rides-index-it
 import RideSearch from '../../components/ride-search/ride-search'
 import RideFilters from '../../components/ride-filters/ride-filters'
 
-const per = 10
+const per = PAGINATION.DEFAULT_PER_PAGE
 
 const styles = {
   chip: {

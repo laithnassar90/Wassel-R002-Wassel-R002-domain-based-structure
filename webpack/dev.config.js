@@ -6,13 +6,13 @@ config.devtool = 'eval-source-map';
 config.output.publicPath = '/static/';
 
 config.entry.push(
-  'webpack-dev-server/client?http://localhost:8080'
+  'webpack-dev-server/client?http://localhost:3001'
 );
 
 config.devServer = {
   progress: true,
   colors: true,
-  port: 8080,
+  port: 3001,
   inline: true,
   historyApiFallback: true,
 };

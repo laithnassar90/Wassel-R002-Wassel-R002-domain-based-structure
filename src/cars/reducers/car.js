@@ -25,7 +25,7 @@ export function car(state = initialState, action) {
       isFetching: true
     };
   case CAR_FETCH_SUCCESS:
-    item = action.payload.data
+    item = action.payload && action.payload.data ? action.payload.data : {}
     return {
       ...state,
       isFetching: false,
@@ -37,7 +37,7 @@ export function car(state = initialState, action) {
       isSaving: true
     };
   case CAR_UPDATE_SUCCESS:
-    item = action.payload.data
+    item = action.payload && action.payload.data ? action.payload.data : {}
     return {
       ...state,
       isSaving: false,

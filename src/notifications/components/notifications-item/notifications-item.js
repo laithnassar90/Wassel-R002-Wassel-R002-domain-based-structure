@@ -41,9 +41,11 @@ export class NotificationsItem extends React.Component {
         className={classNames('header__notification', {'header__notification--seen' : notification.seen_at})}
         onMouseOver={this.onMouseOverAction}
       >
-        <Link to={`/users/${notification.sender.id}`}>
-          <Avatar src={notification.sender.avatar} />
-        </Link>
+        {notification.sender && (
+          <Link to={`/users/${notification.sender.id}`}>
+            <Avatar src={notification.sender.avatar} />
+          </Link>
+        )}
         {this.renderNotification(notification)}
       </div>
     )

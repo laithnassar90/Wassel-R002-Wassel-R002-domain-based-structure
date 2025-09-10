@@ -16,6 +16,7 @@ import '../stylesheets/application.css'
 
 // components
 import { Header } from '../components/header/header/header'
+import { ErrorBoundary } from '../components/shared/error-boundary/error-boundary'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -70,21 +71,25 @@ class Application extends Component {
     } = this.props
 
     return (
-      <div>
-        <Header
-          isAuthenticated={isAuthenticated}
-          isStarted={isStarted}
-          isFetching={isFetching}
-          currentUser={currentUser}
-          notifications={notifications}
-          containerWidth={containerWidth}
-          markAsSeen={this.markAsSeen}
-          onLogout={this.logout}
-        />
-        <div id='main' className='container'>
-          {children}
+      <ErrorBoundary>
+        <div>
+          <Header
+            isAuthenticated={isAuthenticated}
+            isStarted={isStarted}
+            isFetching={isFetching}
+            currentUser={currentUser}
+            notifications={notifications}
+            containerWidth={containerWidth}
+            markAsSeen={this.markAsSeen}
+            onLogout={this.logout}
+          />
+          <div id='main' className='container'>
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
+          </div>
         </div>
-      </div>
+      </ErrorBoundary>
     )
   }
 }

@@ -66,7 +66,7 @@ export class Header extends Component {
           onLeftIconButtonTouchTap={this.handleTouchTapLeftIconButton}
           title={title}
           zDepth={0}
-          style={{position: 'fixed'}}
+          style={{position: 'fixed', backgroundColor: '#8BC34A'}}
           showMenuIconButton={showMenuIconButton}
           iconElementRight={<HeaderRight {...this.props} />}
         />

@@ -36,8 +36,8 @@ describe('reducers', () => {
       data: {
         id: 1,
         role: 'user',
-        access_token: 'access_token',
-        email: 'harry.potter@a.com',
+        access_token: 'test_token',
+        email: 'test@example.com',
       }
     }
 
@@ -49,8 +49,8 @@ describe('reducers', () => {
       isAuthenticated: true,
       id: 1,
       role: 'user',
-      access_token: 'access_token',
-      email: 'harry.potter@a.com',
+      access_token: 'test_token',
+      email: 'test@example.com',
     }
 
     const state = session({
@@ -86,8 +86,8 @@ describe('reducers', () => {
       isAuthenticated: false,
       id: 1,
       role: 'user',
-      access_token: 'access_token',
-      email: 'harry.potter@a.com',
+      access_token: 'test_token',
+      email: 'test@example.com',
     }
 
     const state = session({
@@ -112,7 +112,7 @@ describe('reducers', () => {
       isAuthenticated: true,
       id: 1,
       role: 'user',
-      access_token: 'access_token',
+      access_token: 'test_token',
       email: CurrentUser2().email,
     }
 
@@ -124,8 +124,8 @@ describe('reducers', () => {
       isAuthenticated: false,
       id: 1,
       role: 'user',
-      access_token: 'access_token',
-      email: 'harry.potter@a.com'
+      access_token: 'test_token',
+      email: 'test@example.com'
     }, {
       type: USER_UPDATE_SUCCESS,
       payload: payload

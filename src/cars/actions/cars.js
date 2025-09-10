@@ -22,6 +22,11 @@ import { APIEndpoints } from '../../constants/constants'
 export function fetchCars(userId, page = 1, per = 10) {
   return (dispatch, getState) => {
     const { session } = getState()
+    
+    if (!session || !session.email || !session.access_token) {
+      return Promise.reject(new Error('Authentication required'))
+    }
+    
     return dispatch({
       types: [CARS_FETCH_REQUEST, CARS_FETCH_SUCCESS, CARS_FETCH_FAILURE],
       payload: {
@@ -34,7 +39,8 @@ export function fetchCars(userId, page = 1, per = 10) {
           params: {
             page,
             per,
-          }
+          },
+          timeout: 10000
         }
       }
     })

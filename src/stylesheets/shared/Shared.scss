@@ -5,35 +5,54 @@
 
 .heading {
   border-bottom: 1px solid gray;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  min-height: 40px;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
 
 .heading__title {
-  display: inline-block;
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 5px;
   padding-top: 5px;
+  
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 }
 
 .heading__button {
-  float: right;
   margin-bottom: 10px;
-}
-
-.heading {
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid gray;
-  height: 40px;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 0;
+  }
 }
 
 .heading-title {
   margin-top: 5px;
   font-size: 20px;
   font-weight: bold;
-  float: left;
+  
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 }
 
 .heading-button {
-  float: right;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 10px;
+  }
 }

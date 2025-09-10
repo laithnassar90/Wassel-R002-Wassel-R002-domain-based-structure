@@ -29,7 +29,7 @@ export class RideOfferForm extends Component {
         <div className='book-ride'>
           <form className='book-ride-form' onSubmit={handleSubmit}>
             <Field name="places" component={SelectField} hintText="Click to book seats">
-              {_.map(places, (n) => n)}
+              {places}
             </Field>
 
             <button type="submit" className="btn btn-default">Submit</button>

@@ -16,9 +16,9 @@ export class NotificationsList extends Component {
     const { notifications, markAsSeen } = this.props
     if (notifications.pagination.total_count > 0) {
       return (
-        notifications.items.map((notification, i) =>
+        notifications.items.map((notification) =>
           <NotificationsItem
-            key={i}
+            key={notification.id || notification.created_at}
             notification={notification}
             markAsSeen={markAsSeen}
           />
