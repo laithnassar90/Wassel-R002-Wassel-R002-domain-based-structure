@@ -22,29 +22,33 @@ const SelectableList = makeSelectable(List);
 const styles = {
   logo: {
     cursor: 'pointer',
-    fontSize: 26,
-    color: typography.textFullWhite,
+    fontSize: 20,
+    color: '#1a202c',
     lineHeight: `${spacing.desktopKeylineIncrement}px`,
     fontWeight: 700,
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    background: 'white',
     paddingLeft: spacing.desktopGutter,
-    paddingTop: 16,
-    paddingBottom: 16,
-    marginBottom: 12,
-    borderRadius: '0 0 20px 0',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-    fontFamily: 'Inter, Roboto, sans-serif',
-    letterSpacing: '-0.02em'
+    paddingTop: 20,
+    paddingBottom: 20,
+    marginBottom: 0,
+    borderBottom: '1px solid #e2e8f0',
+    fontFamily: 'Inter, Roboto, sans-serif'
   },
   avatatStyle: {
     marginRight: 12,
-    border: '3px solid rgba(255, 255, 255, 0.3)'
+    width: 32,
+    height: 32
   },
   logoImage: {
-    height: '36px',
+    height: '28px',
     marginRight: '12px',
-    verticalAlign: 'middle',
-    filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+    verticalAlign: 'middle'
+  },
+  drawer: {
+    width: 280,
+    background: 'white',
+    borderRight: '1px solid #e2e8f0',
+    boxShadow: '0 0 15px rgba(0, 0, 0, 0.05)'
   }
 }
 
@@ -139,7 +143,7 @@ export class AppNavDrawer extends Component {
         docked={docked}
         open={open}
         onRequestChange={onRequestChangeNavDrawer}
-        containerStyle={{zIndex: zIndex.drawer - 100}}
+        containerStyle={{...styles.drawer, zIndex: zIndex.drawer - 100}}
       >
         {this.renderLeftHeader()}
         <SelectableList
