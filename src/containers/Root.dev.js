@@ -18,7 +18,7 @@ export default class Root extends Component {
     return (
       <MuiThemeProvider>
         <Provider store={store}>
-          <div>
+          <div style={{ minHeight: '100vh', width: '100%' }}>
             <Router history={history} routes={rootRoutes} />
             <DevTools />
           </div>

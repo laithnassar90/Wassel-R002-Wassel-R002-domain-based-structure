@@ -10,6 +10,12 @@ import { loginFromCookie, saveToLocalStorage } from './sessions/actions/session'
 import { fetchCurrentUser } from './users/actions/users'
 import { fetchNotifications } from './notifications/actions/notifications'
 
+// Import stylesheets
+import './stylesheets/application.css'
+import './stylesheets/Home.scss'
+import './stylesheets/rides/Rides.scss'
+import './stylesheets/shared/Header.scss'
+
 function getFromLocalStorage(store) {
   const email = localStorage.getItem('email')
   const access_token = localStorage.getItem('access_token')
