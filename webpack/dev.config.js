@@ -5,9 +5,8 @@ const WebpackNotifierPlugin = require('webpack-notifier');
 config.devtool = 'eval-source-map';
 config.output.publicPath = '/static/';
 
-config.entry.push(
-  'webpack-dev-server/client?http://localhost:3001'
-);
+// ❌ Not needed in Webpack 6 (dev server auto-injects client)
+// config.entry.push('webpack-dev-server/client?http://localhost:3001');
 
 config.devServer = {
   progress: true,
@@ -17,6 +16,10 @@ config.devServer = {
   historyApiFallback: true,
 };
 
+config.entry.push(
+  'webpack-dev-server/client?http://localhost:3001'
+);
+
 config.plugins = [
   new WebpackNotifierPlugin(),
   new webpack.NoErrorsPlugin(),
@@ -25,5 +28,10 @@ config.plugins = [
     __DEVTOOLS__: false
   })
 ];
+
+// Optional: modern optimization setting
+config.optimization = {
+  emitOnErrors: false
+};
 
 module.exports = config;

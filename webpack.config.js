@@ -1,45 +1,56 @@
-var webpack = require('webpack');
-var path = require('path');
-require('es6-promise').polyfill();
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-  entry: [
-    './src/index'
-  ],
+  mode: 'development', // change to 'production' for prod
+  entry: './src/index.js', // adjust if main file is different
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'app.js',
+    publicPath: '/static/',
   },
   module: {
-    loaders: [
+    rules: [
+      // JS / JSX
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['react', 'es2015', 'stage-0'], // stage-1 included in stage-0
-          plugins: ['transform-runtime', 'transform-decorators-legacy']
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: [
+              '@babel/plugin-transform-runtime',
+              ['@babel/plugin-proposal-decorators', { legacy: true }]
+            ]
+          }
         }
       },
+      // CSS
       {
         test: /\.css$/,
-        loader: 'style!css'
+        use: ['style-loader', 'css-loader']
       },
+      // SCSS / SASS
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
+      // Assets (fonts/images)
       {
-        test: /\.(otf|eot|png|svg|ttf|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=8192'
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
+        test: /\.(png|jpe?g|gif|svg|ttf|woff|woff2|eot|otf)$/i,
+        type: 'asset/resource'
       }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.scss', '.css']
-  }
+    extensions: ['.js', '.jsx', '.scss', '.css']
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      __DEVELOPMENT__: JSON.stringify(true),
+      __DEVTOOLS__: JSON.stringify(false)
+    })
+  ],
+  devtool: 'eval-source-map'
 };
