@@ -1,45 +1,49 @@
-var webpack = require('webpack');
-var path = require('path');
-require('es6-promise').polyfill();
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-  entry: [
-    './src/index'
-  ],
+  mode: process.env.NODE_ENV || 'development',
+  entry: './src/index.js',
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'app.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+  resolve: {
+    modules: ['node_modules'],
+    extensions: ['.js', '.jsx'],
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['react', 'es2015', 'stage-0'], // stage-1 included in stage-0
-          plugins: ['transform-runtime', 'transform-decorators-legacy']
-        }
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/,
-        loader: 'style!css'
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
+        use: [
+          'style-loader', // Injects CSS into the DOM
+          'css-loader', // Resolves CSS imports
+          'sass-loader', // Compiles SCSS to CSS
+        ],
       },
-      {
-        test: /\.(otf|eot|png|svg|ttf|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=8192'
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
-      }
-    ]
+    ],
   },
-  resolve: {
-    extensions: ['', '.js', '.jsx', '.scss', '.css']
-  }
+  plugins: [
+    new webpack.DefinePlugin({
+      __DEVELOPMENT__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+    }),
+  ],
+  stats: {
+    errorDetails: true,
+  },
+  devServer: {
+    historyApiFallback: true, // Support react-router
+    contentBase: path.join(__dirname, 'public'),
+    port: 3001,
+  },
 };

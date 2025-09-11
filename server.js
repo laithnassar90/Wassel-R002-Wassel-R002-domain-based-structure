@@ -5,17 +5,19 @@ const app = express();
 
 const static_path = path.join(__dirname, 'build');
 
-app.use(express.static(static_path))
-  .get('*', (req, res) => {
-    res.sendFile('index.html', {
-      root: static_path
-    });
-  });
+// Serve static files
+app.use(express.static(static_path));
 
-const port = process.env.PORT || 3000;
+// Catch-all handler: send index.html for any route
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(static_path, 'index.html'));
+});
+
+const port = process.env.PORT || 3001;
 app.listen(port, (err) => {
   if (err) {
-    console.log(err);
+    console.error(err);
+  } else {
+    console.log(`Listening at http://localhost:${port}`);
   }
-  console.log(`Listening at localhost:${port}`);
 });
