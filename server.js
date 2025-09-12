@@ -5,32 +5,41 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Define the path to your build directory
+// Paths
 const BUILD_DIR = path.resolve(__dirname, 'build');
+const INDEX_HTML = path.join(BUILD_DIR, 'index.html');
 
-// Serve static files from the React app
+// Middleware
 app.use(express.static(BUILD_DIR));
 
-// Catch-all handler: sends index.html for any route (SPA support)
-app.get('/:path(*)', (req, res) => {
-  res.sendFile(path.join(BUILD_DIR, 'index.html'), (err) => {
+// SPA support
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(INDEX_HTML, (err) => {
     if (err) {
-      console.error('Error sending index.html:', err);
+      console.error('Error serving index.html:', err);
       res.status(500).send('Internal Server Error');
     }
   });
 });
 
-// Handle 404 for API routes or other unknown paths
-app.use((req, res) => {
-  res.status(404).send('Not Found');
+// Example API route
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
 });
 
-// Start the server
-app.listen(PORT, (err) => {
-  if (err) {
-    console.error('Server failed to start:', err);
-    process.exit(1);
-  }
-  console.log(`Server is running at http://localhost:${PORT}`);
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found' });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unexpected error:', err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
