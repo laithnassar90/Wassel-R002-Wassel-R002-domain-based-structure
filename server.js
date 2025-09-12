@@ -1,23 +1,36 @@
 // server.js
 const express = require('express');
 const path = require('path');
+
 const app = express();
+const PORT = process.env.PORT || 3001;
 
-const static_path = path.join(__dirname, 'build');
+// Define the path to your build directory
+const BUILD_DIR = path.resolve(__dirname, 'build');
 
-// Serve static files
-app.use(express.static(static_path));
+// Serve static files from the React app
+app.use(express.static(BUILD_DIR));
 
-// Catch-all handler: send index.html for any route
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(static_path, 'index.html'));
+// Catch-all handler: sends index.html for any route (SPA support)
+app.get('/:path(*)', (req, res) => {
+  res.sendFile(path.join(BUILD_DIR, 'index.html'), (err) => {
+    if (err) {
+      console.error('Error sending index.html:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 });
 
-const port = process.env.PORT || 3001;
-app.listen(port, (err) => {
+// Handle 404 for API routes or other unknown paths
+app.use((req, res) => {
+  res.status(404).send('Not Found');
+});
+
+// Start the server
+app.listen(PORT, (err) => {
   if (err) {
-    console.error(err);
-  } else {
-    console.log(`Listening at http://localhost:${port}`);
+    console.error('Server failed to start:', err);
+    process.exit(1);
   }
+  console.log(`Server is running at http://localhost:${PORT}`);
 });
