@@ -1,29 +1,15 @@
-// utils
-import React, { Component, PropTypes } from 'react'
-import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
-import DevTools from './DevTools'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import { rootRoutes } from '../routes'
+import React from 'react';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
+import store, { history } from '../store/configureStore';
+import App from './App'; // Adjust path as needed
 
-export default class Root extends Component {
-  static propTypes = {
-    store: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
-  }
+const Root = () => (
+  <Provider store={store}>
+    <Router history={history}>
+      <App />
+    </Router>
+  </Provider>
+);
 
-  render() {
-    const { store, history } = this.props
-
-    return (
-      <MuiThemeProvider>
-        <Provider store={store}>
-          <div style={{ minHeight: '100vh', width: '100%' }}>
-            <Router history={history} routes={rootRoutes} />
-            <DevTools />
-          </div>
-        </Provider>
-      </MuiThemeProvider>
-    )
-  }
-}
+export default Root;

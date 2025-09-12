@@ -1,26 +1,21 @@
-// utils
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { autobind } from 'core-decorators'
-import injectTapEventPlugin from 'react-tap-event-plugin'
-import Dimensions from 'react-dimensions'
-import ActionCable from 'actioncable'
-import { browserHistory } from 'react-router'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withSize } from 'react-sizeme';
+import ActionCable from 'actioncable';
+import { applyTheme } from '../utils/applyTheme';
+import { history } from '../store/configureStore';
 
-// actions
-import { logout } from '../sessions/actions/session'
-import { markNotificationAsSeen, userNotificationAdd } from '../notifications/actions/notifications'
+// Actions
+import { logout } from '../sessions/actions/session';
+import { markNotificationAsSeen, userNotificationAdd } from '../notifications/actions/notifications';
 
-// styles
-import '../stylesheets/application.css'
+// Styles
+import '../stylesheets/application.scss'; // Use SCSS
 
-// components
-import { Header } from '../components/header/header/header'
-import { ErrorBoundary } from '../components/shared/error-boundary/error-boundary'
-
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin()
+// Components
+import { Header } from '../components/header/header/header';
+import { ErrorBoundary } from '../components/shared/error-boundary/error-boundary';
 
 class Application extends Component {
   static propTypes = {
@@ -30,45 +25,48 @@ class Application extends Component {
     isStarted: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
     notifications: PropTypes.object,
-  }
-
-  @autobind
-  markAsSeen(notificationId) {
-    const { markNotificationAsSeen } = this.props
-    markNotificationAsSeen(notificationId)
-  }
-
-  @autobind
-  logout(currentUser) {
-    const { logout } = this.props
-
-    logout(currentUser)
-      .then(localStorage.clear())
-      .then(browserHistory.push('/'))
-  }
+    size: PropTypes.shape({
+      width: PropTypes.number,
+    }),
+  };
 
   componentDidMount() {
-    const { isAuthenticated, userNotificationAdd } = this.props
+    applyTheme();
+    const { isAuthenticated, userNotificationAdd } = this.props;
 
     if (isAuthenticated) {
-      window.cable.subscriptions.create("NotificationsChannel", {
-        received(data) {
-          userNotificationAdd(data.notification)
-        }
-      })
+      if (!window.cable) {
+        window.cable = ActionCable.createConsumer('/cable'); // Adjust URL
+      }
+      window.cable.subscriptions.create('NotificationsChannel', {
+        received: (data) => {
+          userNotificationAdd(data.notification);
+        },
+      });
     }
   }
 
-  render () {
-    const {
-      currentUser,
-      notifications,
-      isAuthenticated,
-      isStarted,
-      isFetching,
-      containerWidth,
-      children
-    } = this.props
+  componentWillUnmount() {
+    if (window.cable && window.cable.subscriptions) {
+      window.cable.subscriptions.subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+  }
+
+  markAsSeen = (notificationId) => {
+    const { markNotificationAsSeen } = this.props;
+    markNotificationAsSeen(notificationId);
+  };
+
+  logout = (currentUser) => {
+    const { logout } = this.props;
+    logout(currentUser)
+      .then(() => localStorage.clear())
+      .then(() => history.push('/'));
+  };
+
+  render() {
+    const { currentUser, notifications, isAuthenticated, isStarted, isFetching, size, children } =
+      this.props;
 
     return (
       <ErrorBoundary>
@@ -79,36 +77,32 @@ class Application extends Component {
             isFetching={isFetching}
             currentUser={currentUser}
             notifications={notifications}
-            containerWidth={containerWidth}
+            containerWidth={size.width}
             markAsSeen={this.markAsSeen}
             onLogout={this.logout}
           />
-          <div id='main' className='container'>
-            <ErrorBoundary>
-              {children}
-            </ErrorBoundary>
+          <div id="main" className="container">
+            <ErrorBoundary>{children}</ErrorBoundary>
           </div>
         </div>
       </ErrorBoundary>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    session: state.session,
-    isAuthenticated: state.session.isAuthenticated,
-    currentUser: state.currentUser.item,
-    isStarted: state.currentUser.isStarted,
-    isFetching: state.currentUser.isFetching,
-    notifications: state.notifications,
-  }
-}
+const mapStateToProps = (state) => ({
+  session: state.session,
+  isAuthenticated: state.session.isAuthenticated,
+  currentUser: state.currentUser.item,
+  isStarted: state.currentUser.isStarted,
+  isFetching: state.currentUser.isFetching,
+  notifications: state.notifications,
+});
 
 const mapDispatchToProps = {
   logout,
   markNotificationAsSeen,
-  userNotificationAdd
-}
+  userNotificationAdd,
+};
 
-export default Dimensions()(connect(mapStateToProps, mapDispatchToProps)(Application))
+export default withSize()(connect(mapStateToProps, mapDispatchToProps)(Application));

@@ -1,52 +1,38 @@
+// webpack/production.config.js
 const path = require('path');
-const webpack = require('webpack');
 
-// Base config
-const config = {
-  mode: 'production',
-  entry: './src/index.js', // adjust if your main entry is different
+module.exports = {
+  entry: './src/index.js', // Adjust if application.js is the entry point
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: 'bundle.js',
-    publicPath: '/static/',
+    path: path.resolve(__dirname, '../dist'), // Adjust path if dist is elsewhere
+    filename: 'app.js',
+    sourceMapFilename: 'app.js.map'
   },
-  devtool: 'eval', // you can switch to 'source-map' for production
   module: {
     rules: [
-      // JS/JSX
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
         }
       },
-      // CSS
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
       },
-      // Images
       {
-        test: /\.(png|jpg|jpeg|gif|svg)$/i,
-        type: 'asset/resource'
-      },
-      // Fonts
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource'
+        test: /\.(eot|woff|woff2|ttf|svg)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: '[name][ext]' // Matches your previous output (e.g., 674f50d287a8c48dc19ba404d20fe713.eot)
+        }
       }
     ]
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      __DEVELOPMENT__: false,
-      __DEVTOOLS__: false
-    })
-  ],
-  resolve: {
-    extensions: ['.js', '.jsx', '.json']
-  }
+  devtool: 'source-map',
+  mode: 'production'
 };
-
-module.exports = config;
