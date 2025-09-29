@@ -1,3 +1,4 @@
+// src/sessions/actions/session.ts
 import axios from 'axios'
 import {
   LOGIN_REQUEST,
@@ -9,8 +10,8 @@ import {
 } from '../action-types'
 import { APIEndpoints } from '../../constants/constants'
 
-export function loginFromCookie(data) {
-  return (dispatch, getState) => {
+export function loginFromCookie(data: { email: string; access_token: string }) {
+  return (dispatch: any) => {
     return dispatch({
       types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
       payload: {
@@ -31,8 +32,8 @@ export function loginFromCookie(data) {
   }
 }
 
-export function logInEmailBackend(data) {
-  return (dispatch, getState) => {
+export function logInEmailBackend(data: { email: string; password: string }) {
+  return (dispatch: any) => {
     return dispatch({
       types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
       payload: {
@@ -45,35 +46,14 @@ export function logInEmailBackend(data) {
       }
     }).catch(error => {
       console.error('Login failed:', error)
-      const errorMessage = (error.response && error.response.data && error.response.data.message) || 'Login failed. Please try again.'
+      const errorMessage = (error.response?.data?.message) || 'Login failed. Please try again.'
       return Promise.reject(errorMessage)
     })
   }
 }
 
-export function logInFbBackend(data) {
-  return (dispatch, getState) => {
-    return dispatch({
-      types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
-      payload: {
-        request: {
-          method: 'post',
-          url: APIEndpoints.LOGIN_FB,
-          data: {
-            uid: data.id,
-            provider: 'facebook',
-            email: data.email,
-            first_name: data.first_name,
-            last_name: data.last_name
-          }
-        }
-      }
-    })
-  }
-}
-
 export function logout() {
-  return (dispatch, getState) => {
+  return (dispatch: any, getState: any) => {
     const { session } = getState()
     return dispatch({
       types: [LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE],
@@ -90,14 +70,13 @@ export function logout() {
       }
     }).catch(error => {
       console.error('Logout failed:', error)
-      // Clear local storage even if logout fails
       localStorage.clear()
       return Promise.resolve()
     })
   }
 }
 
-export function saveToLocalStorage(email, access_token) {
+export function saveToLocalStorage(email: string, access_token: string) {
   return () => {
     localStorage.setItem('email', email)
     localStorage.setItem('access_token', access_token)
