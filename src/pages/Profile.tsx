@@ -1,4 +1,4 @@
-import { Camera, Edit, Star, Calendar, MapPin, Phone, Mail } from 'lucide-react';
+import { Camera, Edit, Star, Calendar, Phone, Mail } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,7 +13,7 @@ const mockProfile = {
   totalTrips: 47,
   memberSince: 'January 2023',
   location: 'Dubai, UAE',
-  bio: 'Friendly traveler who enjoys meeting new people and sharing rides. Always punctual and respectful of others\' time.',
+  bio: "Friendly traveler who enjoys meeting new people and sharing rides. Always punctual and respectful of others' time.",
   verified: {
     email: true,
     phone: true,
@@ -27,15 +27,15 @@ const mockProfile = {
   },
 };
 
-export function Profile() {
+const Profile: React.FC = () => {
   return (
     <div className="p-6 space-y-6 max-w-4xl">
       <div className="space-y-4">
         <div className="flex items-center gap-6">
           <div className="w-16 h-16 rounded-xl overflow-hidden bg-white p-3 shadow-lg border border-gray-200">
-            <img 
-              src="https://c.animaapp.com/mfz4nq9yxAlLvz/img/logo-wassel_1.png" 
-              alt="Wassel Logo" 
+            <img
+              src="https://c.animaapp.com/mfz4nq9yxAlLvz/img/logo-wassel_1.png"
+              alt="Wassel Logo"
               className="w-full h-full object-contain filter contrast-125 brightness-110"
               style={{ imageRendering: 'crisp-edges' }}
             />
@@ -68,7 +68,7 @@ export function Profile() {
                 <Camera className="h-4 w-4" />
               </Button>
             </div>
-            
+
             <div>
               <h2 className="font-headline font-semibold text-xl text-foreground">{mockProfile.name}</h2>
               <p className="text-muted-foreground">{mockProfile.location}</p>
@@ -177,4 +177,6 @@ export function Profile() {
       </div>
     </div>
   );
-}
+};
+
+export default Profile;

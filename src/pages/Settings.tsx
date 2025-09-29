@@ -1,18 +1,18 @@
-import { Bell, Globe, Shield, User, Moon, Sun } from 'lucide-react';
+import { Bell, Globe, Shield, User } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export function Settings() {
+const Settings: React.FC = () => {
   return (
     <div className="p-6 space-y-6 max-w-4xl">
       <div className="space-y-4">
         <div className="flex items-center gap-6">
           <div className="w-16 h-16 rounded-xl overflow-hidden bg-white p-3 shadow-lg border border-gray-200">
-            <img 
-              src="https://c.animaapp.com/mfz4nq9yxAlLvz/img/logo-wassel_1.png" 
-              alt="Wassel Logo" 
+            <img
+              src="https://c.animaapp.com/mfz4nq9yxAlLvz/img/logo-wassel_1.png"
+              alt="Wassel Logo"
               className="w-full h-full object-contain filter contrast-125 brightness-110"
               style={{ imageRendering: 'crisp-edges' }}
             />
@@ -50,7 +50,7 @@ export function Settings() {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <Label className="text-foreground">SMS Notifications</Label>
               <Select defaultValue="important">
@@ -234,10 +234,10 @@ export function Settings() {
 
       {/* Save Button */}
       <div className="flex justify-end">
-        <Button className="wassel-button-primary">
-          Save Changes
-        </Button>
+        <Button className="wassel-button-primary">Save Changes</Button>
       </div>
     </div>
   );
-}
+};
+
+export default Settings;

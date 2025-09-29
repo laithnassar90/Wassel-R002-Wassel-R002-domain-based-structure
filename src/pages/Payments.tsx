@@ -4,7 +4,26 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAppStore } from '@/stores/appStore';
 
-const mockTransactions = [
+// Types
+interface Transaction {
+  id: string;
+  type: 'payment' | 'refund' | 'deposit';
+  description: string;
+  amount: number;
+  date: string;
+  status: 'completed' | 'pending' | 'failed';
+}
+
+interface PaymentMethod {
+  id: string;
+  type: 'card';
+  last4: string;
+  brand: string;
+  isDefault: boolean;
+}
+
+// Mock data (replace with API later)
+const mockTransactions: Transaction[] = [
   {
     id: '1',
     type: 'payment',
@@ -39,7 +58,7 @@ const mockTransactions = [
   },
 ];
 
-const mockPaymentMethods = [
+const mockPaymentMethods: PaymentMethod[] = [
   {
     id: '1',
     type: 'card',
@@ -59,7 +78,7 @@ const mockPaymentMethods = [
 export function Payments() {
   const { walletBalance } = useAppStore();
 
-  const getTransactionIcon = (type: string) => {
+  const getTransactionIcon = (type: Transaction['type']) => {
     switch (type) {
       case 'payment':
         return <ArrowUpRight className="h-4 w-4 text-destructive" />;
@@ -73,29 +92,28 @@ export function Payments() {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="space-y-4">
-        <div className="flex items-center gap-6">
-          <div className="w-16 h-16 rounded-xl overflow-hidden bg-white p-3 shadow-lg border border-gray-200">
-            <img 
-              src="https://c.animaapp.com/mfz4nq9yxAlLvz/img/logo-wassel_1.png" 
-              alt="Wassel Logo" 
-              className="w-full h-full object-contain filter contrast-125 brightness-110"
-              style={{ imageRendering: 'crisp-edges' }}
-            />
+      {/* Page Header */}
+      <div className="flex items-center gap-6">
+        <div className="w-16 h-16 rounded-xl overflow-hidden bg-white p-3 shadow-lg border border-gray-200">
+          <img
+            src="https://c.animaapp.com/mfz4nq9yxAlLvz/img/logo-wassel_1.png"
+            alt="Wassel Logo"
+            className="w-full h-full object-contain filter contrast-125 brightness-110"
+            style={{ imageRendering: 'crisp-edges' }}
+          />
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center gap-4">
+            <h1 className="font-headline font-bold text-3xl wassel-text-gradient">Payments</h1>
+            <span className="text-xl arabic font-arabic text-wassel-gray">المدفوعات</span>
           </div>
-          <div className="space-y-2">
-            <div className="flex items-center gap-4">
-              <h1 className="font-headline font-bold text-3xl wassel-text-gradient">Payments</h1>
-              <span className="text-xl arabic font-arabic text-wassel-gray">المدفوعات</span>
-            </div>
-            <p className="text-muted-foreground">Manage your wallet and payment methods</p>
-          </div>
+          <p className="text-muted-foreground">Manage your wallet and payment methods</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Wallet Balance */}
-        <Card className="lg:col-span-1">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
               <Wallet className="h-5 w-5" />
@@ -186,9 +204,11 @@ export function Payments() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`font-semibold ${
-                    transaction.amount > 0 ? 'text-success' : 'text-foreground'
-                  }`}>
+                  <p
+                    className={`font-semibold ${
+                      transaction.amount > 0 ? 'text-success' : 'text-foreground'
+                    }`}
+                  >
                     {transaction.amount > 0 ? '+' : ''}${Math.abs(transaction.amount)}
                   </p>
                   <Badge

@@ -1,9 +1,19 @@
 import React from "react";
-import { Calendar } from "lucide-react"; // ✅ make sure lucide-react is installed
-import { Card, CardContent } from "@/components/ui/card"; // ✅ adjust import if your Card is elsewhere
+import { Calendar } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
-// Example trips data – replace with your store / API
-const trips = [
+interface Trip {
+  id: number;
+  from: string;
+  to: string;
+  date: string;
+  time: string;
+  price: number;
+  status: "upcoming" | "completed" | "canceled";
+}
+
+// Example trips – replace with your API/store
+const trips: Trip[] = [
   { id: 1, from: "Amman", to: "Irbid", date: "2025-09-28", time: "10:00 AM", price: 5, status: "upcoming" },
   { id: 2, from: "Amman", to: "Zarqa", date: "2025-09-29", time: "1:00 PM", price: 3, status: "completed" },
   { id: 3, from: "Amman", to: "Jerash", date: "2025-09-30", time: "5:00 PM", price: 4, status: "canceled" },
@@ -33,9 +43,7 @@ const Dashboard: React.FC = () => {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-foreground">
-                    ${trip.price}
-                  </p>
+                  <p className="font-semibold text-foreground">${trip.price}</p>
                   <p className="text-sm text-muted-foreground capitalize">
                     {trip.status}
                   </p>
