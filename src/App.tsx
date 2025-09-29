@@ -1,61 +1,63 @@
-import { BrowserRouter as Router } from 'react-router-dom';
-import Sidebar from './layout/Sidebar';
-import TopHeader from './layout/TopHeader';
-import Dashboard from './pages/Dashboard';
-import { useAppStore } from './stores/AppStore';
-import './index.css'; // ✅ use CSS instead of HTML
-import Settings from './pages/Settings';
-import FindRide from './pages/Findride';
-import Messages from './pages/Messages';
-import MyTrips from './pages/MyTips';
-import OfferRide from './pages/OfferRide';
-import Payments from './pages/Payments';
-import Profile from './pages/Profile';
+// src/App.tsx
+import React, { Suspense, lazy } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-function App() {
-  const { currentPage } = useAppStore();
+// Lazy load pages for performance (code-splitting)
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const MyTrips = lazy(() => import("./pages/MyTrips"));
+const OfferRide = lazy(() => import("./pages/OfferRide"));
+const Payments = lazy(() => import("./pages/Payments"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Findride = lazy(() => import("./pages/Findride"));
+const Messages = lazy(() => import("./pages/Messages"));
 
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'dashboard': return <Dashboard />;
-      case 'settings': return <Settings />;
-      case 'find-ride': return <FindRide />;
-      case 'messages': return <Messages />;
-      case 'my-trips': return <MyTrips />;
-      case 'offer-ride': return <OfferRide />;
-      case 'payments': return <Payments />;
-      case 'profile': return <Profile />;
-      // Add more cases if needed
-      default: return <Dashboard />;
-    }
-  };
+// Layout components
+import TopHeader from "./layout/TopHeader";
+import Footer from "./layout/Footer"; // optional footer
+
+// Redux hooks
+import { useAppSelector, useAppDispatch } from "./hooks/useRedux";
+
+// Fallback component while pages load
+const Loading = () => <div className="loading">Loading...</div>;
+
+const App: React.FC = () => {
+  const trips = useAppSelector((state) => state.trips);
+  const dispatch = useAppDispatch();
 
   return (
-    <Router>
-      <div className="wassel-app">
-        <div className="flex h-screen">
-          <Sidebar />
-          <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
-            <div className="wassel-header">
-              <h1>Wassel - Ride Sharing</h1>
-              <TopHeader />
-            </div>
-            <main className="flex-1 overflow-y-auto">
-              {renderCurrentPage()}
-            </main>
-            <div className="wassel-actions">
-              <button className="primary-button">Primary Action</button>
-              <button className="secondary-button">Secondary Action</button>
-            </div>
-            <div className="wassel-footer">
-              © 2025 Wassel
-            </div>
-          </div>
-        </div>
+    <div className="app-container">
+      {/* Top navigation/header */}
+      <TopHeader />
+
+      {/* Suspense for lazy-loaded routes */}
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/my-trips" element={<MyTrips />} />
+          <Route path="/offer-ride" element={<OfferRide />} />
+          <Route path="/payments" element={<Payments />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/find-ride" element={<Findride />} />
+          <Route path="/messages" element={<Messages />} />
+
+          {/* Fallback 404 */}
+          <Route path="*" element={<div>404 - Page Not Found</div>} />
+        </Routes>
+      </Suspense>
+
+      {/* Optional footer */}
+      <Footer />
+
+      {/* Debug: trips length */}
+      <div className="trips-count" style={{ display: "none" }}>
+        Total trips in store: {trips.length}
       </div>
-    </Router>
+    </div>
   );
-}
+};
 
 export default App;
-
