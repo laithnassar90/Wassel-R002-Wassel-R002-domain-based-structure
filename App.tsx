@@ -4,13 +4,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // Layout
 import MainLayout from "./layout/MainLayout";
 
-// Pages (lazy loaded for better performance)
-const HomePage = lazy(() => import("./pages/HomePage"));
-const RidesPage = lazy(() => import("./rides/RidesPage"));
-const SessionsPage = lazy(() => import("./sessions/SessionsPage"));
-const NotificationsPage = lazy(() => import("./notifications/NotificationsPage"));
-const CarsPage = lazy(() => import("./cars/CarsPage"));
-const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+// Pages (lazy loaded from the new domain structure for better performance)
+// Pages are now located under src/domains/{feature}/pages
+const HomePage = lazy(() => import("./domains/home/pages/HomePage"));
+const RidesPage = lazy(() => import("./domains/rides/pages/RidesPage"));
+const SessionsPage = lazy(() => import("./domains/sessions/pages/SessionsPage"));
+const NotificationsPage = lazy(() => import("./domains/notifications/pages/NotificationsPage"));
+const CarsPage = lazy(() => import("./domains/cars/pages/CarsPage"));
+const NotFoundPage = lazy(() => import("./domains/shared/pages/NotFoundPage")); // Assuming a 'shared' domain for generic pages
 
 const App: React.FC = () => {
   return (

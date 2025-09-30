@@ -1,4 +1,4 @@
-// src/pages/MyTips.tsx
+// src/pages/MyTips.tsx (Temporarily fixed to resolve the error)
 import React from "react";
 
 const MyTips: React.FC = () => {
